@@ -1,0 +1,8 @@
+---
+name: "benchmarking"
+version: '2'
+services:
+  benchmarking:
+    container_name: benchmarking
+    build: .
+    command: "sleep 3600"

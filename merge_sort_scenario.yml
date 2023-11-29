@@ -1,0 +1,14 @@
+---
+name: 
+author: Brendan Kamp <brendan@re-cinq.com>
+description: Benchmarking a Merge Sort
+
+compose-file: !include compose.yaml
+
+flow:
+  - name: Benchmarking
+    container: benchmarking
+    commands:
+      - type: console 
+        command: go run . -type merge
+        note: Merge Sort

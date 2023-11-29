@@ -1,25 +1,15 @@
 package main
 
 import (
-	"math/rand"
 	"sortbenchmarking/pkg/bubble"
+	"sortbenchmarking/pkg/insertion"
 	"sortbenchmarking/pkg/merge"
 	"testing"
-	"time"
 )
 
 const arraySize = 10000
 
-func generateArray(n int) []int {
-	rand.Seed(time.Now().UnixNano())
-	var result []int
-	for i := 0; i < n; i++ {
-		result = append(result, rand.Intn(10000000000))
-	}
-	return result
-}
-
-var arr = generateArray(arraySize)
+var arr = GenerateArray(arraySize)
 
 func BenchmarkTestBubbleSort(b *testing.B) {
 	for i := 0; i < b.N; i++ {
@@ -30,5 +20,11 @@ func BenchmarkTestBubbleSort(b *testing.B) {
 func BenchmarkTestMergeSort(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		merge.Sort(arr)
+	}
+}
+
+func BenchmarkTestInsertionSort(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		insertion.Sort(arr)
 	}
 }
