@@ -1,0 +1,94 @@
+postgresql:
+  host: green-coding-postgres-container
+  user: postgres
+  dbname: green-coding
+  password: {set your password}
+  port: 9573
+
+smtp:
+  server: SMTP_SERVER
+  sender: SMTP_SENDER
+  port: SMTP_PORT
+  password: SMTP_AUTH_PW
+  user: SMTP_AUTH_USER
+
+admin:
+  email: myemail@dev.local
+  bcc_email: ""
+  no_emails: True
+
+
+cluster:
+  api_url: http://api.green-coding.internal:9142
+  metrics_url: http://metrics.green-coding.internal:9142
+
+client:
+  sleep_time_no_job: 300
+  sleep_time_after_job: 300
+
+machine:
+  id: 1
+  description: "Development machine for testing"
+  error_log_file: False
+  jobs_processing: random
+
+measurement:
+  idle-time-start: 10
+  idle-time-end: 5
+  flow-process-runtime: 3800
+  phase-transition-time: 1
+  metric-providers:
+
+    linux:
+      cpu.utilization.procfs.system.provider.CpuUtilizationProcfsSystemProvider:
+        resolution: 100
+      cpu.utilization.cgroup.container.provider.CpuUtilizationCgroupContainerProvider:
+        resolution: 100
+      memory.total.cgroup.container.provider.MemoryTotalCgroupContainerProvider:
+        resolution: 100
+      network.io.cgroup.container.provider.NetworkIoCgroupContainerProvider:
+        resolution: 100
+      cpu.energy.RAPL.MSR.component.provider.CpuEnergyRaplMsrComponentProvider:
+        resolution: 100
+      memory.energy.RAPL.MSR.component.provider.MemoryEnergyRaplMsrComponentProvider:
+        resolution: 100
+      lm_sensors.temperature.component.provider.LmSensorsTemperatureComponentProvider:
+        resolution: 100
+        chips: ['thinkpad-isa-0000', 'coretemp-isa-0000']
+        features: ['CPU', 'Package id 0', 'Core 0', 'Core 1', 'Core 2', 'Core 3']
+      psu.energy.ac.xgboost.machine.provider.PsuEnergyAcXgboostMachineProvider:
+        resolution: 100
+        CPUChips: 1
+        HW_CPUFreq: 1800
+        CPUCores: 4
+        CPUThreads: 8
+        TDP: 15
+        HW_MemAmountGB: 16
+        Hardware_Availability_Year: 2020
+
+sci:
+    # https://github.com/Green-Software-Foundation/sci/blob/main/Software_Carbon_Intensity/Software_Carbon_Intensity_Specification.md
+
+    # The values specific to the machine will be set here. The values that are specific to the
+    # software, like R – Functional unit, will be set in the usage_scenario.yml
+
+    # EL Expected Lifespan; the anticipated time that the equipment will be installed. Value is in years
+    # The number 3.5 comes from a typical developer machine (Apple Macbook 16" 2023 - https://dataviz.boavizta.org/manufacturerdata?lifetime=3.5&name=14-inch%20MacBook%20Pro%20with%2064GB)
+    EL: 3.5
+    # RS Resource-share; the share of the total available resources of the hardware reserved for use by the software.
+    # This ratio is typically 1 with the Green Metrics Tool unless you use a custom distributed orchestrator
+    RS: 1
+    # TE Total Embodied Emissions; the sum of Life Cycle Assessment (LCA) emissions for all hardware components.
+    # Value is in gCO2eq
+    # The value has to be identified from vendor datasheets. Here are some example sources:
+    # https://dataviz.boavizta.org/manufacturerdata
+    # https://tco.exploresurface.com/sustainability/calculator
+    # https://www.delltechnologies.com/asset/en-us/products/servers/technical-support/Full_LCA_Dell_R740.pdf
+    # The default is the value for a developer machine (Apple Macbook 16" 2023 - https://dataviz.boavizta.org/manufacturerdata?lifetime=3.5&name=14-inch%20MacBook%20Pro%20with%2064GB)
+    TE: 194000
+    # I is the Carbon Intensity at the location of this machine
+    # The value can either be a number in gCO2e/kWh or a carbon intensity provider that fetches this number dynamically
+    # https://docs.green-coding.berlin/docs/measuring/carbon-intensity-providers/carbon-intensity-providers-overview/
+    # For fixed values get the number from https://ember-climate.org/insights/research/global-electricity-review-2022/
+    # The number 475 that comes as default is for Germany from 2022
+    I: 475
